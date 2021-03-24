@@ -1,16 +1,25 @@
-# This is a sample Python script.
+import pathlib
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def meta_data():
+    currentDirectory = pathlib.Path('.\\files_dir')
+    files = {}
+    for currentFile in currentDirectory.iterdir():
+        with open(currentFile, 'r', encoding="utf-8") as f:
+            file = f.readlines()
+        files[currentFile] = len(file)
+    list_files = list(files.items())
+    list_files.sort(key=lambda i: i[1])
+    with open(str(currentDirectory)+'\\result.txt', 'w', encoding="utf-8") as file_result:
+        for file in list_files:
+            with open(file[0], 'r', encoding="utf-8") as f:
+                file_name = str(file[0])
+                file_name = file_name[file_name.find('\\') + 1:len(file_name)]
+                file_result.write(file_name + '\n')
+                file_result.write(str(file[1]) + '\n')
+                for line in f:
+                    if line.find('\n') > 0:
+                        file_result.write(line)
+                    else:
+                        file_result.write(line + '\n')
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+meta_data()
